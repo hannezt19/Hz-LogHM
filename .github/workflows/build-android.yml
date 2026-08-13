@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'www/**'
+      - 'index.html'
       - 'capacitor.config.json'
       - 'package.json'
       - '.github/workflows/build-android.yml'
@@ -13,6 +13,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      HAS_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 != '' }}
     steps:
       - name: Checkout kode
         uses: actions/checkout@v4
@@ -49,7 +51,7 @@ jobs:
         run: npx cap sync android
 
       - name: Setup signing key (jika ada secret)
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        if: env.HAS_KEYSTORE == 'true'
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
@@ -62,28 +64,28 @@ jobs:
           EOF
 
       - name: Build APK Debug (tanpa signing khusus)
-        if: ${{ secrets.KEYSTORE_BASE64 == '' }}
+        if: env.HAS_KEYSTORE == 'false'
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Build APK Release (signed, jika secret tersedia)
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        if: env.HAS_KEYSTORE == 'true'
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleRelease
 
       - name: Upload APK Debug sebagai artifact
-        if: ${{ secrets.KEYSTORE_BASE64 == '' }}
+        if: env.HAS_KEYSTORE == 'false'
         uses: actions/upload-artifact@v4
         with:
           name: LogHM-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload APK Release sebagai artifact
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        if: env.HAS_KEYSTORE == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: LogHM-release-apk
