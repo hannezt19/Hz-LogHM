@@ -1,0 +1,17 @@
+# === LocBook V7.1 - JANGAN UPLOAD FILE INI KE GITHUB PUBLIC ===
+# Keystore tanda tangan - KUNCI UTAMA UPDATE TANPA UNINSTALL
+*.jks
+*.keystore
+keystore.properties
+*.p12
+
+# APK hasil build (private backup)
+*.apk
+*.aab
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules kalau pakai bubblewrap
+node_modules/
