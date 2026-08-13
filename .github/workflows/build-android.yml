@@ -49,7 +49,7 @@ jobs:
         run: npx cap sync android
 
       - name: Setup signing key (jika ada secret)
-        if: env.KEYSTORE_BASE64 != ''
+        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
@@ -62,32 +62,28 @@ jobs:
           EOF
 
       - name: Build APK Debug (tanpa signing khusus)
-        if: env.KEYSTORE_BASE64 == ''
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        if: ${{ secrets.KEYSTORE_BASE64 == '' }}
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Build APK Release (signed, jika secret tersedia)
-        if: env.KEYSTORE_BASE64 != ''
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleRelease
 
       - name: Upload APK Debug sebagai artifact
-        if: env.KEYSTORE_BASE64 == ''
+        if: ${{ secrets.KEYSTORE_BASE64 == '' }}
         uses: actions/upload-artifact@v4
         with:
           name: LogHM-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload APK Release sebagai artifact
-        if: env.KEYSTORE_BASE64 != ''
+        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: LogHM-release-apk
