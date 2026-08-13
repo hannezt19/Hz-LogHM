@@ -1,0 +1,12 @@
+{
+  "appId": "com.hz.logHM",
+  "appName": "Hz LogHM",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": false
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

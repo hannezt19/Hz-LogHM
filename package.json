@@ -1,0 +1,13 @@
+{
+  "name": "hz-loghm",
+  "version": "7.1.0",
+  "description": "Hz LogHM - LocBook V7.1 Native App",
+  "private": true,
+  "dependencies": {
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/android": "^6.1.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
+}
