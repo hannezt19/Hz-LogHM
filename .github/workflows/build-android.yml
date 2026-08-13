@@ -31,6 +31,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Siapkan folder www
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp manifest.json www/ || true
+          cp sw.js www/ || true
+          cp -r icons www/ || true
+
       - name: Tambah platform Android (jika belum ada)
         run: |
           if [ ! -d "android" ]; then
